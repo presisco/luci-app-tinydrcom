@@ -41,7 +41,7 @@ define Package/luci-app-tinydrcom/install
 	$(CP) -a root/* $(1)
 	
 	chmod 755 $(1)/usr/bin/tinydrcom-daemon.sh
-	chmod 755 $(1)/etc/init.d/tinydrcom-conf
+	chmod 755 $(1)/etc/init.d/tinydrcom
 endef
 
 $(eval $(call BuildPackage,luci-app-tinydrcom))
