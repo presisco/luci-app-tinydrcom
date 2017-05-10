@@ -1,0 +1,56 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: kuoruan@gmail.com\n"
+"Language-Team: none\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.5\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Configure TinyDrcom client"
+msgstr "控制TinyDrcom客户端"
+
+msgid "Start at boot"
+msgstr "开机启动"
+
+msgid "Auto Online"
+msgstr "自动登录"
+
+msgid "Auto Redial"
+msgstr "自动重播"
+
+msgid "Username"
+msgstr "用户名"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Mode"
+msgstr "工作模式"
+
+msgid "authentication's IP"
+msgstr "验证服务器IP"
+
+msgid "authentication's port"
+msgstr "验证服务器端口"
+
+msgid "MAC BROADCAST"
+msgstr "使用MAC广播"
+
+msgid "authentication's MAC address"
+msgstr "验证服务器MAC地址"
+
+msgid "Interfaces"
+msgstr "网络接口"
+
+msgid "Packet timeout (ms)"
+msgstr "EAP包超时时长(ms)"
+
+msgid "UDP Packet timeout (ms)"
+msgstr "UDP包超时时长(ms)"
+

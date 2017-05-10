@@ -1,0 +1,76 @@
+#!/bin/sh /etc/rc.common
+#Author:corecode
+#Modifier:superlc,presisco
+
+START=99
+STOP=10
+
+reload()
+{
+	sleep 1
+
+	echo [General] > /etc/config/tinydrcom.conf
+	echo UserName=$(uci get tinydrcom.@tinydrcom[0].uid) >> /etc/config/tinydrcom.conf
+	echo PassWord=$(uci get tinydrcom.@tinydrcom[0].pwd) >> /etc/config/tinydrcom.conf
+	echo Mode=$(uci get tinydrcom.@tinydrcom[0].mode) >> /etc/config/tinydrcom.conf
+	echo AutoOnline=$(uci get tinydrcom.@tinydrcom[0].autoonline) >> /etc/config/tinydrcom.conf
+	echo AutoRedial=$(uci get tinydrcom.@tinydrcom[0].autoredial) >> /etc/config/tinydrcom.conf
+	echo [Remote] >> /etc/config/tinydrcom.conf
+	echo IP=$(uci get tinydrcom.@tinydrcom[0].ip) >> /etc/config/tinydrcom.conf
+	echo Port=$(uci get tinydrcom.@tinydrcom[0].port) >> /etc/config/tinydrcom.conf
+	echo UseBroadcast=$(uci get tinydrcom.@tinydrcom[0].usebroadcast) >> /etc/config/tinydrcom.conf
+	echo MAC=$(uci get tinydrcom.@tinydrcom[0].mac) >> /etc/config/tinydrcom.conf
+	echo [Local] >> /etc/config/tinydrcom.conf
+	
+	if [ $(uci get tinydrcom.@tinydrcom[0].usecustomif) -eq 1 ]
+	then
+		echo NIC=$(uci get tinydrcom.@tinydrcom[0].customif) >> /etc/config/tinydrcom.conf
+	else
+		echo NIC=$(uci get tinydrcom.@tinydrcom[0].nic) >> /etc/config/tinydrcom.conf
+	fi
+	
+	echo EAPTimeout=$(uci get tinydrcom.@tinydrcom[0].eaptimeout) >> /etc/config/tinydrcom.conf
+	echo UDPTimeout=$(uci get tinydrcom.@tinydrcom[0].udptimeout) >> /etc/config/tinydrcom.conf
+	echo RetryInterval=$(uci get tinydrcom.@tinydrcom[0].retryinterval) >> /etc/config/tinydrcom.conf
+	echo PulseInterval=$(uci get tinydrcom.@tinydrcom[0].pulseinterval) >> /etc/config/tinydrcom.conf
+	echo MaxBrokenRetry=$(uci get tinydrcom.@tinydrcom[0].maxbrokenretry) >> /etc/config/tinydrcom.conf
+	echo HostName=$(uci get tinydrcom.@tinydrcom[0].hostname) >> /etc/config/tinydrcom.conf
+	echo KernelVersion=$(uci get tinydrcom.@tinydrcom[0].kernelversion) >> /etc/config/tinydrcom.conf
+	
+	/etc/init.d/tinydrcom stop
+	/etc/init.d/tinydrcom disable
+	
+	if [ $(uci get tinydrcom.@tinydrcom[0].enable) -eq 1 ] ;
+	then
+		/etc/init.d/tinydrcom-conf enable
+		/etc/init.d/tinydrcom-conf restart
+	else
+		/etc/init.d/tinydrcom-conf stop
+		/etc/init.d/tinydrcom-conf disable
+	fi
+}
+
+start(){
+	if [ $(uci get tinydrcom.@tinydrcom[0].usedelay) -eq 1 ]
+	then
+		sleep $(uci get tinydrcom.@tinydrcom[0].startupdelay)
+	fi
+
+	tinydrcom -b -r -c /etc/config/tinydrcom.conf -o $(uci get tinydrcom.@tinydrcom[0].ezlogpath) &
+	
+	if [ $(uci get tinydrcom.@tinydrcom[0].usedaemon) -eq 1 ] ;
+	then
+		sh /usr/bin/tinydrcom-daemon.sh &
+	fi
+}
+
+stop(){
+	PID=`ps | grep 'tinydrcom-daemon.sh' | grep -v grep | awk '{print $1}'`
+	kill $PID
+	killall tinydrcom
+}
+
+restart(){
+	stop
+	start
+}
